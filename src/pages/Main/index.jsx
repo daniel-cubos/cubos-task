@@ -6,7 +6,7 @@ import "./styles.css";
 function Main({ allTasks, setAllTasks }) {
   const [newTaskInput, setNewTaskInput] = useState("");
 
-  function handleAddNewTask() {
+  async function handleAddNewTask() {
     if (!newTaskInput) {
       return;
     }
@@ -20,13 +20,24 @@ function Main({ allTasks, setAllTasks }) {
     }
 
     const newTask = {
-      id: Math.floor(Math.random() * 10000),
       name: newTaskInput,
       description: description,
       owner: "Daniel Lopes",
     };
 
-    localTasks.push(newTask);
+    const response = await fetch("http://localhost:3334/tasks", {
+      method: "POST",
+      body: JSON.stringify(newTask),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.status > 204) return;
+
+    const data = await response.json();
+
+    localTasks.push({ ...newTask, ...data });
 
     setAllTasks(localTasks);
     setNewTaskInput("");
