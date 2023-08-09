@@ -16,6 +16,10 @@ function MainRoutes() {
         path="/task-detail/:id"
         element={<TaskDetail allTasks={allTasks} />}
       />
+      <Route
+        path="/nova-rota-byPeu"
+        element={<TaskDetail allTasks={allTasks} />}
+      />
     </Routes>
   );
 }
